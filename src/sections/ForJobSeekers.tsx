@@ -2,7 +2,6 @@ import { useState, type FormEvent } from 'react';
 import { Briefcase, Send, CheckCircle2, Loader2, Upload } from 'lucide-react';
 import SectionTitle from '@/components/SectionTitle';
 import Reveal from '@/components/Reveal';
-import { supabase } from '@/lib/supabase';
 
 const categories = [
   'Fresher',
@@ -52,7 +51,7 @@ export default function ForJobSeekers() {
     }
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setStatus('loading');
     setErrorMsg('');
@@ -67,13 +66,6 @@ export default function ForJobSeekers() {
     if (!emailRegex.test(form.email)) {
       setStatus('error');
       setErrorMsg('Please enter a valid email address.');
-      return;
-    }
-
-    const { error } = await supabase.from('job_seeker_submissions').insert(form);
-    if (error) {
-      setStatus('error');
-      setErrorMsg('Something went wrong. Please try again or contact us directly.');
       return;
     }
 

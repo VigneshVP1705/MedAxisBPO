@@ -2,7 +2,6 @@ import { useState, type FormEvent } from 'react';
 import { Building2, Send, CheckCircle2, Loader2 } from 'lucide-react';
 import SectionTitle from '@/components/SectionTitle';
 import Reveal from '@/components/Reveal';
-import { supabase } from '@/lib/supabase';
 
 const solutions = [
   'Permanent Staffing',
@@ -48,7 +47,7 @@ export default function ForEmployers() {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setStatus('loading');
     setErrorMsg('');
@@ -66,13 +65,6 @@ export default function ForEmployers() {
     if (!emailRegex.test(form.email)) {
       setStatus('error');
       setErrorMsg('Please enter a valid email address.');
-      return;
-    }
-
-    const { error } = await supabase.from('employer_inquiries').insert(form);
-    if (error) {
-      setStatus('error');
-      setErrorMsg('Something went wrong. Please try again or contact us directly.');
       return;
     }
 

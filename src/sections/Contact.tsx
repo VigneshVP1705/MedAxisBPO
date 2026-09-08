@@ -2,13 +2,12 @@ import { useState, type FormEvent } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle2, Loader2 } from 'lucide-react';
 import SectionTitle from '@/components/SectionTitle';
 import Reveal from '@/components/Reveal';
-import { supabase } from '@/lib/supabase';
 
-const contactInfo = [
-  { icon: Mail, label: 'Email', value: 'medaxisbpo@gmail.com', href: 'mailto:medaxisbpo@gmail.com' },
-  { icon: Phone, label: 'Phone', value: '+91 7397004824', href: 'tel:+917397004824' },
-  { icon: MapPin, label: 'Location', value: '15/6 A, Kabilar Street, Ekkattuthangal, Chennai - 600032', href: null },
-];
+// const contactInfo = [
+//   { icon: Mail, label: 'Email', value: 'medaxisbpo@gmail.com', href: 'mailto:medaxisbpo@gmail.com' },
+//   { icon: Phone, label: 'Phone', value: '+91 7397004824', href: 'tel:+917397004824' },
+//   { icon: MapPin, label: 'Location', value: '15/6 A, Kabilar Street, Ekkattuthangal, Chennai - 600032', href: null },
+// ];
 
 interface FormState {
   name: string;
@@ -35,7 +34,7 @@ export default function Contact() {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setStatus('loading');
     setErrorMsg('');
@@ -50,13 +49,6 @@ export default function Contact() {
     if (!emailRegex.test(form.email)) {
       setStatus('error');
       setErrorMsg('Please enter a valid email address.');
-      return;
-    }
-
-    const { error } = await supabase.from('contact_messages').insert(form);
-    if (error) {
-      setStatus('error');
-      setErrorMsg('Something went wrong. Please try again.');
       return;
     }
 
